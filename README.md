@@ -6,6 +6,6 @@ A simple python app to sort all the clutter on your desktop for you.
 
 #### Current TODO:
 * Add ability to sort by timestamp rather than file type
-* Add more file types
 * Add a timer to see how long the transfer took
-* Add simple options (change the icon, select destination folder)
+* Add the option to select destination folder
+* Add the option to change folder names 
