@@ -15,11 +15,38 @@ icon_light = os.path.abspath('icon_light.svg')
 icon_dark = os.path.abspath('icon_dark.svg')
 light_icon_bool = True
 
-text_files = ['doc', 'docx', 'log', 'msg', 'odt', 'pages', 'rtf', 'tex', 'txt', 'wpd', 'wps']
-data_files = ['csv', 'dat', 'ged', 'key', 'keychain', 'pps', 'ppt', 'pptx', 'sdf', 'tar', 'tax2016', 'tax2017', 'vcf', 'xml']
-audio_files = ['aif', 'iff', 'm3u', 'm4a', 'mid', 'mp3', 'mpa', 'wav', 'wma']
-video_files = ['3g2', '3gp', 'asf', 'flv', 'm4v', 'mov', 'mp4', 'mpg', 'rm', 'srt', 'swf', 'vob', 'wmv']
-#TODO: Add more filetypes -> https://fileinfo.com/filetypes/common
+
+folder_names = ['text_files', 'data_files', 'audio_files', 'video_files', 'model-ing_files', 'raster_files', 
+    'vector_files', 'page_files', 'spreadsheet_files', 'database_files', 'executable_files', 'game_files', 'cad_files', 
+    'gis_files', 'web_files', 'font_files', 'system_files', 'settings_files', 'encoded_files', 'compressed_files', 'disk_files', 
+    'developer_files', 'backup_files', 'misc_files']
+
+file_types = [
+    ['doc', 'docx', 'log', 'msg', 'odt', 'pages', 'rtf', 'tex', 'txt', 'wpd', 'wps'],
+    ['csv', 'dat', 'ged', 'key', 'keychain', 'pps', 'ppt', 'pptx', 'sdf', 'tar', 'tax2016', 'tax2017', 'vcf', 'xml'],
+    ['aif', 'iff', 'm3u', 'm4a', 'mid', 'mp3', 'mpa', 'wav', 'wma'],
+    ['3g2', '3gp', 'asf', 'flv', 'm4v', 'mov', 'mp4', 'mpg', 'rm', 'srt', 'swf', 'vob', 'wmv'],
+    ['3dm', '3ds', 'max', 'obj'],
+    ['bmp', 'dds', 'gif', 'jpg', 'png', 'psd', 'pspimage', 'tga', 'thm', 'tif', 'tiff', 'yuv'],
+    ['ai', 'eps', 'ps', 'svg'],
+    ['indd', 'pct', 'pdf'],
+    ['xlr', 'xls', 'slsx'],
+    ['accdb', 'db', 'dbf', 'mdb', 'pdb', 'sql'],
+    ['apk', 'app', 'bat', 'cgi', 'com', 'exe', 'gadget', 'jar', 'wsf'],
+    ['b', 'dem', 'gam', 'nes', 'rom', 'sav'],
+    ['dwg', 'dxf'],
+    ['gpx', 'kml', 'kmz'],
+    ['aps', 'aspx', 'cer', 'cfm', 'csr', 'css', 'dcr', 'htm', 'html', 'js', 'jsp', 'php', 'rss', 'xhtml'],
+    ['fnt', 'fon', 'otf', 'ttf'],
+    ['cab', 'cpl', 'cur', 'deskthemepack', 'dll', 'dmp', 'drv', 'icns', 'ico', 'lnk', 'sys'],
+    ['cfg', 'ini', 'prf'],
+    ['hqx', 'mim', 'uue'],
+    ['7z', 'cbr', 'deb', 'gz', 'pkg', 'rar', 'rpm', 'sitx', 'tar', 'zip', 'zipx'],
+    ['bin', 'cue', 'dmg', 'iso', 'mdf', 'toast', 'vcd'],
+    ['c', 'class', 'cpp', 'cs', 'dtd', 'fla', 'h', 'java', 'lua', 'm', 'pl', 'py', 'sh', 'sln', 'swift', 'vb', 'vcxproj', 'xcodeproj'],
+    ['bak', 'tmp'],
+    ['crdownload', 'ics', 'msi', 'part', 'torrent'],
+]
 
 username = pwd.getpwuid(os.getuid())[0]
 
@@ -39,39 +66,16 @@ def file_looper(self):
         notification('Skarabus is bored', 'There was nothing for him to do...')
     else:
         for filename in os.listdir(desktop_dir):
-            if filename.split('.')[1] in text_files: # Text files
-                try:
-                    mover("Text_Files", filename)
-                except FileNotFoundError:
-                    os.makedirs(documents_dir + "Text_Files")
-                    print("Created Text_Files folder...")
-                    mover("Text_Files", filename)
-                print("Moved file %s..." % filename)
-            elif filename.split('.')[1] in data_files: # Data files
-                try:
-                    mover("Data_Files", filename)
-                except FileNotFoundError:
-                    os.makedirs(documents_dir + "Data_Files")
-                    print("Created Data_Files folder...")
-                    mover("Data_Files", filename)
-                print("Moved file %s..." % filename)
-            elif filename.split('.')[1] in audio_files: # Audio files
-                try:
-                    mover("Audio_Files", filename)
-                except FileNotFoundError:
-                    os.makedirs(documents_dir + "Audio_Files")
-                    print("Created Audio_Files folder...")
-                    mover("Audio_Files", filename)
-                print("Moved file %s..." % filename)
-            elif filename.split('.')[1] in video_files: # Video files
-                try:
-                    mover("Video_Files", filename)
-                except FileNotFoundError:
-                    os.makedirs(documents_dir + "Video_Files")
-                    print("Created Video_Files folder...")
-                    mover("Video_Files", filename)
-                print("Moved file %s..." % filename)
-        notification('Skarabus is happy', 'All your dong has been rolled...')
+            for x in range (0, len(folder_names)):
+                if filename.split('.')[1] in file_types[x]:
+                    if os.path.isdir(documents_dir + '/' + folder_names[x]):
+                        mover(folder_names[x], filename)
+                    else:
+                        os.makedirs(documents_dir + '/' + folder_names[x])
+                        print("Created %s folder..." % folder_names[x])
+                        mover(folder_names[x], filename)
+                    print("Moved file %s..." % filename)
+    notification('Skarabus is happy', 'All your dong has been rolled...')
 
 
 def menu_builder():
@@ -94,6 +98,7 @@ def menu_builder():
 
 def icon_switcher(self):
     global light_icon_bool
+
     if light_icon_bool:
         indicator.set_icon(icon_dark)
         light_icon_bool = False
