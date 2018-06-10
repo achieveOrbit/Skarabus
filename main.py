@@ -7,9 +7,13 @@ from gi.repository import Gtk as gtk
 from gi.repository import AppIndicator3 as appindicator
 from gi.repository import Notify as notify
 
+#TODO: Add ability to sort by timestamp rather than file type
 
 indicator_id = 'skarabusindicator'
 
+icon_light = os.path.abspath('icon_light.svg')
+icon_dark = os.path.abspath('icon_dark.svg')
+light_icon_bool = True
 
 text_files = ['doc', 'docx', 'log', 'msg', 'odt', 'pages', 'rtf', 'tex', 'txt', 'wpd', 'wps']
 data_files = ['csv', 'dat', 'ged', 'key', 'keychain', 'pps', 'ppt', 'pptx', 'sdf', 'tar', 'tax2016', 'tax2017', 'vcf', 'xml']
@@ -77,12 +81,24 @@ def menu_builder():
     item_quit.connect('activate', quit)
     item_sort = gtk.MenuItem('Roll all the dung')
     item_sort.connect('activate', file_looper)
+    item_icon_changer = gtk.MenuItem('Switch icon')
+    item_icon_changer.connect('activate', icon_switcher)
     
     menu.append(item_sort)
+    menu.append(item_icon_changer)
     menu.append(item_quit)
     menu.show_all()
 
     return menu
+
+
+def icon_switcher(self):
+    global light_icon_bool
+    if light_icon_bool:
+        indicator.set_icon(icon_dark)
+        light_icon_bool = False
+    else:
+        indicator.set_icon(icon_light)
 
 
 def notification(title, text):
@@ -101,7 +117,7 @@ if __name__ == "__main__":
 
     notify.init(indicator_id)
 
-    indicator = appindicator.Indicator.new(indicator_id, os.path.abspath('icon.svg'), appindicator.IndicatorCategory.SYSTEM_SERVICES)
+    indicator = appindicator.Indicator.new(indicator_id, icon_light, appindicator.IndicatorCategory.SYSTEM_SERVICES)
     indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
     indicator.set_menu(menu_builder())
 
